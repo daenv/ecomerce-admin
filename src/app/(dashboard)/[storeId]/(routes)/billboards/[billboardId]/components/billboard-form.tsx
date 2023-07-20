@@ -1,5 +1,7 @@
 'use client';
 import * as z from 'zod';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 import { useParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
@@ -19,6 +21,9 @@ import { Trash } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import ImageUpload from '@/components/ui/image-upload'
+
+/* import { AlertModal } from "@/components/modals/alert-modal" */
+
 
 const formSchema = z.object({
    lable: z.string().min(1),
@@ -45,8 +50,46 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
       defaultValues: initialData || { lable: '', imageUrl: '' },
    });
 
+   const onSubmit = async (values: BillboardFormValues) => {
+      try {
+         setLoading(true);
+         if(initialData) {
+            await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, values)
+         }else{
+            await axios.post(`/api/${params.storeId}/billboards`, values)
+         }
+         router.refresh()
+         router.push(`/${params.storeId}/billboards`)
+         toast.success(toastMessage)
+      } catch (error) {
+         toast.error('Something went wrong')
+      }finally {
+         setLoading(false);
+      }
+   }
+ const onDelete = async () => {
+    try {
+      setLoading(true);
+      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+      router.refresh();
+      router.push(`/${params.storeId}/billboards`);
+      toast.success('Billboard deleted.');
+    } catch (error: any) {
+      toast.error('Make sure you removed all categories using this billboard first.');
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
+  }
    return (
       <>
+      {/* <AlertModal 
+      isOpen={open} 
+      onClose={() => setOpen(false)}
+      onConfirm={onDelete}
+      loading={loading}
+    /> */}
+
          <div className="flex items-center justify-between">
             <Heading title={title} description={description} />
             {initialData && (
@@ -59,7 +102,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
          <Form {...form}>
             <form
                onSubmit={() => {
-                  console.log('submit');
+                  form.handleSubmit(onSubmit)
                }}
                className="space-y-8 w-full"
             >
