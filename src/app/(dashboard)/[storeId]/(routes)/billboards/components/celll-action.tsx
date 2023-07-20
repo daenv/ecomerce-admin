@@ -1,14 +1,16 @@
-'use client'
+'use client';
 
+import { BillboardColumn } from "./columns";
 
 interface CellActionProps {
-    data: any;
+   data: BillboardColumn[];
 }
 
-export const CellAction = () =>{
-    return(
-        <div >
-heloo
-        </div>
-    )
-}
+export const CellAction: React.FC<CellActionProps> = ({data}) => {
+   return (
+    <div>
+        <div> action</div>
+    </div>
+
+   )
+};
