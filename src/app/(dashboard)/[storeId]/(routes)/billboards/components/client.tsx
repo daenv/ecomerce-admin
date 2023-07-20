@@ -19,14 +19,14 @@ const BillboardClient: React.FC<BillboardClientProps> = ({ data }) => {
       <>
          <div className="flex items-center justify-between">
             <Heading title={`Billboard `} description="Manage Billboard for your stores" />
-            <Button onClick={() => router.push(`${params.storeId}/billboards/new`)}>
+            <Button onClick={() => router.push(`/${params.storeId}/billboards/new`)}>
                <Plus className="mr-2 h-4 w-4" /> Add new
             </Button>
          </div>
-         <Separator />
+         {/* <Separator />
          <DataTable searchKey="label" columns={columns} data={data} />
          <Heading title="API" description="API CALLs For Billboards" />
-         <Separator />
+         <Separator /> */}
       </>
    );
 };
