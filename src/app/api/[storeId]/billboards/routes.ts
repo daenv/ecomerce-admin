@@ -53,6 +53,16 @@ export async function POST(req: Request, { params }: { params: { storeId: string
    }
 }
 
+/* export async function (req: Request, { params }: { params: { storeId: string } }) {
+   try {
+      
+   } catch (error) {
+      console.log('[BILLBOARDS_POST]', error);
+      return new NextResponse('Internal error', { status: 500 });
+   }
+   
+} */
+
 export async function GET(req: Request, { params }: { params: { storeId: string } }) {
    try {
       if (!params.storeId) {
